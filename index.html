@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Películas y Series</title>
+    <!-- Vinculación con Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+/*style boton inicio*/
+        .boton-inicio {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #000307;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background 0.3s;
+        }
+        
+        .boton-inicio:hover {
+            background-color: #0056b3;
+        }
+        
+        .boton-inicio span {
+            margin-left: 8px;
+        }
+/*style boton inicio*/   
+   .fixed-search {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white; /* Ajusta el color según el diseño */
+    padding: 10px;
+    z-index: 1000; /* Asegura que esté sobre otros elementos */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Efecto sombra opcional */
+    }
+
+        /* Footer */
+        .footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: relative;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Estilo para las tarjetas de las películas */
+        .movie-card {
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        /* Efecto de ampliación al pasar el mouse */
+        .movie-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Imagen con un efecto de zoom al hacer hover */
+        .movie-card img {
+            max-width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Efecto de zoom en la imagen */
+        .movie-card:hover img {
+            transform: scale(1.1);
+        }
+/* Contenedor de la imagen con posición relativa */
+
+/* ********************************************************* */
+/* Contenedor de la imagen con posición relativa */
+.movie-card {
+    position: relative;
+    overflow: hidden;
+}
+/*---------------------- whats app icono antes de mod-----------------------------------------*/
+/* Efecto de brillo y rebote */
+@keyframes rebote {
+    0% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 0 5px rgba(37, 211, 102, 0.8));
+    }
+    30% {
+        transform: translateY(-10px) scale(1.1);
+        filter: drop-shadow(0 0 20px rgba(37, 211, 102, 1));
+    }
+    50% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 0 10px rgba(37, 211, 102, 0.9));
+    }
+    70% {
+        transform: translateY(-5px) scale(1.05);
+        filter: drop-shadow(0 0 15px rgba(37, 211, 102, 1));
+    }
+    100% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 0 5px rgba(37, 211, 102, 0.8));
+    }
+}
+
+/* Icono de WhatsApp en la parte superior derecha */
+.whatsapp-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 55px; /* Tamaño del icono */
+    height: 55px;
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    cursor: pointer;
+    animation: rebote 1.5s infinite ease-in-out; /* Se repite constantemente */
+    pointer-events: auto; /* Asegura que el evento se capture correctamente */
+    cursor: pointer;      /* Mejora la experiencia visual */
+}
+
+/* Efecto de radiación (brillo pulsante) */
+@keyframes radiacion {
+    0% {
+        filter: drop-shadow(0 0 5px rgba(37, 211, 102, 0.5));
+    }
+    100% {
+        filter: drop-shadow(0 0 12px rgba(37, 211, 102, 1));
+    }
+}
+
+/* Cuando el usuario pasa el mouse, el icono crece un poco */
+.movie-card:hover .whatsapp-button {
+    transform: scale(1.2);
+}
+
+/* ************************** */
+        /* Estilo para el contenedor de filtros */
+        .filter-container {
+            margin-top: 20px;
+        }
+
+        /* Estilo para el modal (cuando se hace clic en una película) */
+        .modal-content {
+            background-color: #f8f9fa;
+        }
+
+        .modal-body img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Estilos para el contenedor de películas en pantallas pequeñas */
+        @media (max-width: 768px) {
+            .movie-card {
+                margin-bottom: 10px;
+            }
+        }
+
+        .modal-trigger {
+            cursor: pointer; 
+            position: relative;
+            display: inline-block;
+        }
+
+        .whatsapp-text {
+            color: red;
+            font-style: italic;
+        }
+
+/*inmovilizar barra*/       
+.fixed-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;  /* o el color que desees */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* solo si quieres sombra */
+}
+
+.main-content {
+  padding-top: 60px;  /* Ajusta esto según la altura de tu barra fija */
+}
+    </style>
+</head>
+    
+<body>
+    <!-- Menú Superior -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Películas y Series a $10 MXN</a>
+            <input type="text" id="searchInput" class="form-control ms-auto" placeholder="Buscar película...">
+        </div>
+    </nav>
+
+    <!-- Contenedor de filtros -->
+    <div class="container filter-container main-content">
+        <div class="row">
+            <div class="col-md-3">
+                <select class="form-select" id="genreFilter">
+                    <option value="">Filtrar por Género</option>
+                    <option value="Acción">Acción</option>
+                    <option value="Terror">Terror</option>
+                    <option value="Comedia">Comedia</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Suspenso">Suspenso</option>
+                    <option value="Animada">Animada</option>    
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="typeFilter">
+                    <option value="">Filtrar por Tipo</option>
+                    <option value="Película">Película</option>
+                    <option value="Serie">Serie</option>
+                    <option value="Documental">Documental</option>
+                    <option value="Anime">Anime</option>
+                    <option value="Infantil">Infantil</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select class="form-select" id="yearFilter">
+                    <option value="">Filtrar por Año</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                    <option value="2023">2023</option>
+                    <!-- Puedes agregar más años -->
+                </select>
+            </div>
+        </div>
+    </div>
+<br>
+    <!-- Contenedor de Películas -->
+    <div class="container">
+        <div class="row" id="movieContainer">
+            <!-- Aquí se agregarán las películas dinámicamente -->
+        </div>
+    </div>
+
+    <!-- Modal para mostrar más detalles sobre la película -->
+    <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="movieModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalImage" class="img-fluid" src="" alt="">
+                    <p id="modalDescription"></p>
+                   <strong> <p id="modalDetails"></p> <strong></strong>
+                    <a id="whatsappShare" class="btn btn-success" href="" target="_blank">
+                        Pedir por WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vinculación con Bootstrap y JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        // Lista de películas simuladas con título, género, tipo, año, URL de imagen y descripción
+        const movies = [
+        {
+                "title": "Las aventuras de Dog Man",
+                "genre": "Animada",
+                "type": "Infantil",
+                "year": "2025", 
+                "imageUrl": "https://i.ibb.co/F4RrG4px/PORTADA.jpg",
+                "description": "Cuando un fiel perro policía y su dueño, un policía humano, se lesionan juntos en el trabajo, una cirugía descabellada que les salva la vida los une y nace Dog Man, quien ha jurado proteger y servir..."
+        },
+        {
+                "title": "Mi Villano Favorito 4",
+                "genre": "Animada",
+                "type": "Infantil",
+                "year": "2024",
+                "imageUrl": "https://i.ibb.co/QFSpLdXz/portada-subir.png",
+                "description": "Gru, Lucy, sus tres niñas, Gru Jr. y los minions adoptan nuevas identidades secretas para ocultarse del supervillano Maxime Le Mal, un antiguo compañero de Gru que busca vengarse de él."
+        },
+        {
+                "title": "El Maravilloso Mago De Oz",
+                "genre": "Acción, Aventura",
+                "type": "Película",
+                "year": "2025",
+                "imageUrl": "https://i.ibb.co/YFBXRyBS/portada.jpg",
+                "description": "Ellie vive en una ciudad lejana. Un día, la malvada bruja Gingema conjuró un huracán que llevó a Ellie y su perro Toto al país de los Munchkins."
+        },
+        {
+                "title": "Gladiador II",
+                "genre": "Acción, Aventura, Drama",
+                "type": "Película",
+                "year": "2024",
+                "imageUrl": "https://pics.filmaffinity.com/gladiator_ii-808387712-large.jpg",
+                "description": "Años después de presenciar la muerte del venerado héroe Maximus a manos de su tío, Lucius se ve obligado a ingresar al Coliseo después de que su hogar fuera conquistado por los emperadores tiránicos que ahora dirigen Roma con mano de hierro. Con rabia en su corazón y el futuro del Imperio en juego, Lucius debe mirar a su pasado para encontrar fuerza y ​​honor para devolver la gloria de Roma a su pueblo."
+        },
+        {
+                "title": "Compañera Perfecta",
+                "genre": "Terror",
+                "type": "Película",
+                "year": "2025",
+                "imageUrl": "https://image.tmdb.org/t/p/original/dZR98C2Tzefugivw21yEfYvp1G9.jpg",
+                "description": "La muerte de un multimillonario desencadena una cadena de acontecimientos para Iris y sus amigos durante un viaje de fin de semana a su propiedad junto al lago."
+            },
+            {
+                "title": "Emilia Pérez",
+                "genre": "Drama, Crimen",
+                "type": "Película",
+                "year": "2024",
+                "imageUrl": "https://pics.filmaffinity.com/emilia_perez-892423644-large.jpg",
+                "description": "Rita, una abogada infravalorada, es contratada para ayudar a un jefe de cartel a desaparecer y convertirse en la mujer que siempre quiso ser."
+            },
+            {
+                
+                title: "Avengers: Endgame",
+                genre: "Acción",
+                type: "Película",
+                year: "2024",
+                imageUrl: "https://pics.filmaffinity.com/the_falcon_and_the_winter_soldier-780494950-large.jpg",
+                description: "La batalla final contra Thanos para salvar el universo."
+            },
+            {
+                title: "Mufasa: The Lion King",
+                genre: "Acción",
+                type: "Película",
+                year: "2024",
+                imageUrl: "https://pics.filmaffinity.com/mufasa_the_lion_king-600247674-large.jpg",
+                description: "Rafiki, Timón y Pumba le cuentan la leyenda de Mufasa a la joven cachorro de león Kiara, hija de Simba y Nala. "
+            },
+            {
+                title: "Amenaza en el aire 2025 HDCAM",
+                genre: "Acción",
+                type: "Película",
+                year: "2025",
+                imageUrl: "https://pics.filmaffinity.com/flight_risk-426693593-large.jpg",
+                description: "Un piloto (Mark Wahlberg) transporta en su avioneta a una teniente general (Michelle Dockery) que custodia a un testigo (Topher Grace) que va a testificar en un juicio contra la mafia. "
+            },
+            {
+                title: "Dirty Work",
+                genre: "Película",
+                type: "Drama | Romance | Erótico",
+                year: "2024",
+                imageUrl: "https://pics.filmaffinity.com/dirty_work-884347322-large.jpg",
+                description: "Una diseñadora de ropa que pasa por un mal momento acepta un trabajo como asistente de compras de un exitoso escritor de novelas eróticas."
+            },
+            {
+                title: "Canina",
+                genre: "Película",
+                type: "Comedia | Drama",
+                year: "2024",
+                imageUrl: "https://pics.filmaffinity.com/nightbitch-440879611-large.jpg",
+                description: "Un análisis de los efectos negativos de las redes sociales en la sociedad."
+            },
+            {
+            "title": "The Simpsons: The Past and the Furious",
+            "genre": "Animación, Comedia",
+            "type": "Episodio de TV",
+            "year": "2025",
+            "imageUrl": "https://pics.filmaffinity.com/the_simpsons_the_past_and_the_furious-616588707-large.jpg",
+                "description": "Lisa viaja a 1923 y trata de salvar a los alces de Springfield, pero sin querer ayuda a Monty Burns a convertirse en magnate."
+            },
+            {
+            "title": "Alarum",
+            "genre": "Acción, Espionaje",
+            "type": "Película",
+            "year": "2025",
+            "imageUrl": "https://pics.filmaffinity.com/alarum-958511122-large.jpg",
+            "description": "Dos espías casados deben enfrentarse a una red de inteligencia que sospecha su alianza con un equipo de élite deshonesto."
+            },
+            {
+            "title": "Sonic the Hedgehog 3",
+            "genre": "Acción, Aventura",
+            "type": "Película",
+            "year": "2024",
+            "imageUrl": "https://pics.filmaffinity.com/sonic_the_hedgehog_3-737206072-large.jpg",
+            "description": "Sonic, Knuckles y Tails unen fuerzas para enfrentar a Shadow, un enemigo con poderes nunca antes vistos."
+            }, 
+            {
+            "title": "Better Man",
+            "genre": "Musical, Drama, Biográfico",
+            "type": "Película",
+            "year": "2024",
+            "imageUrl": "https://pics.filmaffinity.com/better_man-620220109-large.jpg",
+            "description": "La historia de Robbie Williams, su ascenso a la fama y las luchas personales que enfrentó dentro y fuera del escenario."
+          },
+          {
+            "title": "The Sand Castle",
+            "genre": "Thriller, Intriga, Drama",
+            "type": "Película",
+            "year": "2024",
+            "imageUrl": "https://pics.filmaffinity.com/the_sand_castle-306924154-large.jpg",
+            "description": "Cuatro miembros de una familia, varados en una isla desierta, luchan por sobrevivir mientras su pasado oscuro resurge."
+        },
+        {
+            "title": "Anora",
+            "genre": "Comedia, Drama, Comedia negra",
+            "type": "Película",
+            "year": "2024",
+            "imageUrl": "https://pics.filmaffinity.com/anora-549714429-large.jpg",
+            "description": "Anora, una joven prostituta de Brooklyn, se casa con el hijo de un oligarca ruso, pero sus suegros intentan anular el matrimonio."
+        },
+        {
+            "title": "Criaturas del Farol",
+            "genre": "Terror, Suspenso, Thriller",
+            "type": "Película",
+            "year": "2024",
+            "imageUrl": "https://i.ibb.co/5X5LMktg/FAROL.jpg",
+            "description": "Tras naufragar, una joven marinera es rescatada por un farero solitario, pero pronto descubre que algo siniestro acecha en la isla."
+        }    
+
+        ];
+
+        // Función para mostrar las películas
+        function displayMovies(moviesList) {
+            const movieContainer = document.getElementById("movieContainer");
+            movieContainer.innerHTML = ""; // Limpiar películas existentes
+            
+            moviesList.forEach(movie => {
+                const movieCard = `
+                    <div class="col-md-3">
+                        <div class="card movie-card">
+                            <!-- Aquí está la imagen principal envuelta en un div -->
+                            <div class="modal-trigger" data-bs-toggle="modal" data-bs-target="#movieModal" onclick="showMovieDetails('${movie.title}')">
+                                <img src="${movie.imageUrl}" class="card-img-top" alt="${movie.title}">
+                            </div>
+                            
+                            <!-- Botón de WhatsApp separado -->
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png" 
+                            class="whatsapp-button" 
+                            onclick="shareOnWhatsApp(event, '${movie.title}')"
+                            alt="WhatsApp">
+                            
+                            <span class="whatsapp-text">Pedir en el icono de WhatsApp</span>
+                            
+                            <div class="card-body">
+                                <h5 class="card-title">${movie.title} - ${movie.year}</h5>
+                                
+                            </div>
+                        </div>
+                    </div>
+                `;
+                movieContainer.innerHTML += movieCard;
+            });
+        }
+
+        function filterMovies() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+            const genreFilter = document.getElementById("genreFilter").value;
+            const typeFilter = document.getElementById("typeFilter").value;
+            const yearFilter = document.getElementById("yearFilter").value;
+
+            const filteredMovies = movies.filter(movie =>
+                (searchText === "" || movie.title.toLowerCase().includes(searchText)) &&
+                (genreFilter === "" || movie.genre === genreFilter) &&
+                (typeFilter === "" || movie.type === typeFilter) &&
+                (yearFilter === "" || movie.year === yearFilter)
+            );
+
+            displayMovies(filteredMovies);
+        }
+        // Función para mostrar detalles de la película en el modal
+        function showMovieDetails(title) {
+            const movie = movies.find(movie => movie.title === title);
+            document.getElementById("movieModalLabel").textContent = movie.title;
+            document.getElementById("modalImage").src = movie.imageUrl;
+            document.getElementById("modalDescription").textContent = movie.description;
+
+            document.getElementById("modalDetails").textContent = `${movie.genre} / ${movie.type} / ${movie.year}`;
+
+            // Crear el enlace para compartir en WhatsApp en el modal
+            const whatsappLink = `https://wa.me/2201362136?text=Me%20interesa%20esta%20película%2C%20¿puedes%20darme%20más%20información%20sobre%20${movie.title}%20por%20favor%20?%20`;
+            document.getElementById("whatsappShare").href = whatsappLink;
+        }
+
+        function shareOnWhatsApp(event, title) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            // Asegurar que no se active el modal al hacer clic en WhatsApp
+            const card = event.target.closest(".movie-card");
+            if (card) {
+                card.removeAttribute("data-bs-toggle");
+                card.removeAttribute("data-bs-target");
+            }
+
+            const movie = movies.find(movie => movie.title === title);
+            const whatsappLink = `https://wa.me/2201362136?text=Me%20interesa%20esta%20película%2C%20¿puedes%20darme%20más%20información%20sobre%20${movie.title}%20por%20favor%20?%20`;
+            
+            window.open(whatsappLink, '_blank');
+
+            // Volver a agregar los atributos después de un pequeño retraso
+            setTimeout(() => {
+                if (card) {
+                    card.setAttribute("data-bs-toggle", "modal");
+                    card.setAttribute("data-bs-target", "#movieModal");
+                }
+            }, 500);
+        }
+        document.getElementById("searchInput").addEventListener("input", filterMovies);
+        document.getElementById("genreFilter").addEventListener("change", filterMovies);
+        document.getElementById("typeFilter").addEventListener("change", filterMovies);
+        document.getElementById("yearFilter").addEventListener("change", filterMovies);
+        // Mostrar todas las películas al cargar
+        displayMovies(movies);
+
+        /*para el boton inicio*/
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+       <button class="boton-inicio" onclick="scrollToTop()">
+        ⬆ <span>Inicio - </span>
+        <span>Para Pedir da clic en el icono de WhatsApp</span>
+    </button>
+</body>
+</html>
