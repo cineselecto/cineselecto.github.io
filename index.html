@@ -2,12 +2,31 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
+   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Películas y Series</title>
+    <title>Películas y Series a $10 MXN</title>
+    
+    <!-- SEO Metadatos -->
+    <meta name="description" content="Encuentra y compra películas y series a precios accesibles. Explora nuestra colección de acción, comedia, terror y más.">
+    <meta name="keywords" content="Películas, Series, Comprar películas, Cine, Streaming, Acción, Comedia, Terror">
+    <meta name="author" content="Tu Nombre o Empresa">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph para redes sociales -->
+    <meta property="og:title" content="Películas y Series a $10 MXN">
+    <meta property="og:description" content="Explora nuestra colección de películas y series disponibles a precios accesibles.">
+
+    <meta property="og:image" content="https://i.pinimg.com/736x/9f/b1/24/9fb12498b5fbad3e71710b84e2f0f387.jpg">
+    <meta property="og:url" content="https://cineselecto.github.io/">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="logo.ico">
+
     <!-- Vinculación con Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    
     <style>
 /*style boton inicio*/
         .boton-inicio {
@@ -200,6 +219,7 @@
     <!-- Menú Superior -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-navbar">
         <div class="container-fluid">
+            <img src="logo.ico" alt="Logo" width="32" height="32" style="vertical-align: middle; margin-right: 8px;">
             <a class="navbar-brand" href="#">Películas y Series a $10 MXN</a>
             <input type="text" id="searchInput" class="form-control ms-auto" placeholder="Buscar película...">
         </div>
@@ -275,7 +295,23 @@
     <script>
         // Lista de películas simuladas con título, género, tipo, año, URL de imagen y descripción
         const movies = [
-            {
+        {
+            "title": "Batman Ninja vs. Yakuza League",
+            "genre": "Animación, Fantástico, Acción, Japón feudal, Superhéroes, Cómic, DC Comics",
+            "type": "Película",
+            "year": "2025",
+            "imageUrl": "https://i.pinimg.com/736x/8a/3a/53/8a3a53f34fef3384096532ee9250b355.jpg",
+            "description": "Sólo un día después de regresar del pasado, Batman y sus aliados descubren que el mundo no es exactamente el mismo que dejaron. Toda la isla de Japón ya no existe y los héroes de la Liga de la Justicia tampoco. Pero antes de que puedan comprender lo que está pasando, los yakuza empiezan a llover literalmente del cielo."
+        },
+        {
+            "title": "Estado eléctrico",
+            "genre": "Ciencia ficción, Aventuras, Acción, Fantástico, Thriller futurista, Robots, Años 90, Distopía",
+            "type": "Película",
+            "year": "2025",
+            "imageUrl": "https://i.pinimg.com/736x/47/db/61/47db61fa4db51ee742ddb7c91b044cdd.jpg",
+            "description": "En un futuro distópico donde los avances tecnológicos y la IA han alcanzado niveles desbordantes, Michelle, una joven huérfana, se embarca en un viaje a través de una América devastada junto a su inseparable robot y a un vagabundo excéntrico, buscando a su hermano menor desaparecido."
+        },
+        {
             "title": "El abismo secreto",
             "genre": "Acción, Terror, Ciencia ficción",
             "type": "Película",
@@ -384,7 +420,7 @@
             {
             "title": "The Simpsons: The Past and the Furious",
             "genre": "Animación, Comedia",
-            "type": "Episodio de TV",
+            "type": "Infantil",
             "year": "2025",
             "imageUrl": "https://pics.filmaffinity.com/the_simpsons_the_past_and_the_furious-616588707-large.jpg",
                 "description": "Lisa viaja a 1923 y trata de salvar a los alces de Springfield, pero sin querer ayuda a Monty Burns a convertirse en magnate."
@@ -399,8 +435,8 @@
             },
             {
             "title": "Sonic the Hedgehog 3",
-            "genre": "Acción, Aventura",
-            "type": "Película",
+            "genre": "Animación, Acción, Aventura",
+            "type": "Infantil",
             "year": "2024",
             "imageUrl": "https://pics.filmaffinity.com/sonic_the_hedgehog_3-737206072-large.jpg",
             "description": "Sonic, Knuckles y Tails unen fuerzas para enfrentar a Shadow, un enemigo con poderes nunca antes vistos."
@@ -544,3 +580,4 @@
     </button>
 </body>
 </html>
+
